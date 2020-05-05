@@ -84,6 +84,7 @@
     "prop-types": "^15.7.2",
     "react-app-rewired": "^2.1.6",
     "story-router": "^1.0.1",
-    "webpack-bundle-analyzer": "^3.7.0"
+    "webpack-bundle-analyzer": "^3.7.0",
+    "worker-loader": "^2.0.0"
   }
 }

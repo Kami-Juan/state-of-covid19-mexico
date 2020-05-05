@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {countBy} from 'lodash';
 import App from './router';
 import * as serviceWorker from './serviceWorker';
 
+window.countBy = countBy;
+
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <App />
-  </React.StrictMode>,
+  </>,
   document.getElementById('root'),
 );
 
