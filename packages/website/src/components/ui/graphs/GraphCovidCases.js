@@ -4,6 +4,9 @@ import {groupBy, countBy} from 'lodash';
 import {useSelector} from 'react-redux';
 import BaseGraph from './BaseGraph';
 
+import LabelColor from '../../base/LabelColor';
+import LabelColorContainer from '../../base/LabelColorContainer';
+
 import {timeRangeCollection, sizeRangeCollection} from '../../../utils/methods';
 
 const GraphCovidCases = () => {
@@ -97,7 +100,7 @@ const GraphCovidCases = () => {
         ...prev,
         series: [
           {
-            name: 'No positivo',
+            name: 'Negativos',
             data: Object.entries(labelValuesPositivos).map(val => [
               parseInt(val[0], 10),
               val[1],
@@ -111,7 +114,7 @@ const GraphCovidCases = () => {
             ]),
           },
           {
-            name: 'Pendiente',
+            name: 'Sin confirmar',
             data: Object.entries(labelValuesPendientes).map(val => [
               parseInt(val[0], 10),
               val[1],
@@ -122,7 +125,16 @@ const GraphCovidCases = () => {
     }
   }, [covidData]);
 
-  return <BaseGraph opts={opts} />;
+  return (
+    <>
+      <LabelColorContainer>
+        <LabelColor color="#7ac16d" text="Casos positivos" />
+        <LabelColor color="#2b908f" text="Casos negativos" />
+        <LabelColor color="#f45b5b" text="Casos sin confirmar" />
+      </LabelColorContainer>
+      <BaseGraph opts={opts} />
+    </>
+  );
 };
 
 export default GraphCovidCases;

@@ -5,6 +5,7 @@ import {makeStyles} from '@material-ui/core/styles';
 
 import DashboardLayout from '../layouts/DashboardLayout';
 import GraphCovidCases from '../components/ui/graphs/GraphCovidCases';
+import MapCasesCovid from '../components/ui/map/MapCasesCovid';
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -18,7 +19,7 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <Typography variant="h4" gutterBottom>
-        CASOS POSITIVOS POR ENTIDADES
+        CASOS POSITIVOS EN EL PAÍS
       </Typography>
       <Typography variant="body1" className={classes.text}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
@@ -27,6 +28,7 @@ const Dashboard = () => {
         qui hic facilis repellat.
       </Typography>
       <GraphCovidCases />
+      <MapCasesCovid />
     </DashboardLayout>
   );
 };
