@@ -11,7 +11,7 @@ const Dashboard = () => {
     height: window.innerHeight,
     latitude: 22.586386,
     longitude: -102.020593,
-    zoom: 4.5,
+    zoom: 4.8,
   });
 
   const onMapHandler = event => {

@@ -5,13 +5,10 @@
   "dependencies": {
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
     "connected-react-router": "^6.8.0",
     "highcharts": "^8.0.4",
     "lodash": "^4.17.15",
-    "moment": "2.24.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.5",
@@ -45,7 +42,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@storybook/addon-actions": "^5.3.13",
@@ -63,7 +59,6 @@
     "@testing-library/user-event": "^7.1.2",
     "babel-eslint": "^10.0.3",
     "babel-plugin-import": "^1.13.0",
-    "babel-plugin-styled-components": "^1.10.7",
     "babel-polyfill": "^6.26.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.1",
@@ -83,7 +78,6 @@
     "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "react-app-rewired": "^2.1.6",
-    "story-router": "^1.0.1",
     "webpack-bundle-analyzer": "^3.7.0",
     "worker-loader": "^2.0.0"
   }

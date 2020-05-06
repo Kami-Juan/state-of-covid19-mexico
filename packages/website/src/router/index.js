@@ -7,7 +7,8 @@ import {useMediaQuery} from '@material-ui/core';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 
 import {Provider} from 'react-redux';
-import Dashboard from '../views/Dashboard';
+import StatusView from '../views/StatusView';
+import DashboardLayout from '../layouts/DashboardLayout';
 
 import store, {history} from '../store';
 
@@ -32,11 +33,16 @@ const Container = () => {
       <ConnectedRouter history={history}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Switch>
-            <Route exact path="/">
-              <Dashboard />
-            </Route>
-          </Switch>
+          <DashboardLayout>
+            <Switch>
+              <Route exact path="/">
+                <StatusView />
+              </Route>
+              <Route path="/age">
+                <div>hola</div>
+              </Route>
+            </Switch>
+          </DashboardLayout>
         </ThemeProvider>
       </ConnectedRouter>
     </Provider>

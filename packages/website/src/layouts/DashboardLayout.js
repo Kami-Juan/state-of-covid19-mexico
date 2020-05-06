@@ -7,6 +7,11 @@ import {setMexicoGeojson, setCovidData} from '../store/modules/map/actions';
 
 import Header from '../components/ui/home/Header';
 
+import {RepositoryFactory} from '../repository/RepositoryFactory';
+
+const CovidRepository = RepositoryFactory.get('covid');
+const MapTitleRepository = RepositoryFactory.get('mapTitle');
+
 const useStyles = makeStyles({
   container: {
     marginTop: 64,
@@ -15,26 +20,20 @@ const useStyles = makeStyles({
   },
 });
 
-const DashboardLayout = ({children}) => {
+const StatusView = ({children}) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
     async function getMexicoGeoJSON() {
       try {
-        const geoGSONUrl =
-          process.env.NODE_ENV === 'production' ? 'dist/mx.json' : 'mx.json';
+        const {
+          data: geojsonMexico,
+        } = await MapTitleRepository.getMexicoGeoJson();
+        const {data: covidData} = await CovidRepository.getCovidData();
 
-        const dataCovidUrl =
-          process.env.NODE_ENV === 'production'
-            ? 'dist/covid-counters.json'
-            : 'covid-counters.json';
-
-        const geojsonDataMexico = await (await fetch(geoGSONUrl)).json();
-        const covidDataCounters = await (await fetch(dataCovidUrl)).json();
-
-        dispatch(setMexicoGeojson(geojsonDataMexico));
-        dispatch(setCovidData(covidDataCounters));
+        dispatch(setMexicoGeojson(geojsonMexico));
+        dispatch(setCovidData(covidData));
       } catch (err) {
         // console.log(err);
       }
@@ -52,4 +51,4 @@ const DashboardLayout = ({children}) => {
   );
 };
 
-export default DashboardLayout;
+export default StatusView;
