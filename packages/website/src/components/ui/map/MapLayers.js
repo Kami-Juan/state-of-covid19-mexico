@@ -1,17 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Source, Layer} from 'react-map-gl';
-import {countBy, groupBy} from 'lodash';
 
 import MexicoCovidWorker from '../../../workers/geojsonMexicoCovid.worker';
 
-const MapLayers = () => {
+const MapLayers = ({type}) => {
   const mexicoGeoJSON = useSelector(state => state.map.mexicoGeojson);
   const covidData = useSelector(state => state.map.covidData);
 
   const geoJSONWorker = useRef(null);
   const [geoJSONFormatted, setGeoJSONFormatted] = useState(null);
-  const [typeMap, setTypeMap] = useState('Positivo SARS-CoV-2');
 
   useEffect(() => {
     geoJSONWorker.current = new MexicoCovidWorker();
@@ -22,23 +20,18 @@ const MapLayers = () => {
       return;
     }
 
-    const covidStates = countBy(covidData, 'ENTIDAD_RES');
-    const covidStatesGroup = groupBy(covidData, 'ENTIDAD_RES');
-
     if (geoJSONWorker.current) {
       geoJSONWorker.current.postMessage({
         mexicoGeoJSON,
         covidData,
-        covidStates,
-        covidStatesGroup,
-        typeMap,
+        typeMap: type,
       });
 
       geoJSONWorker.current.addEventListener('message', event => {
         setGeoJSONFormatted({type: 'FeatureCollection', features: event.data});
       });
     }
-  }, [geoJSONWorker, covidData, mexicoGeoJSON, typeMap]);
+  }, [geoJSONWorker, covidData, mexicoGeoJSON, type]);
 
   const mexicoMapLayer = {
     id: 'mexicoMap',

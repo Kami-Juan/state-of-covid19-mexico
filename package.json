@@ -13,6 +13,7 @@
   },
   "scripts": {
     "docs:dev": "vuepress dev packages/docs",
-    "docs:build": "vuepress build packages/docs"
+    "docs:build": "vuepress build packages/docs",
+    "website:build": "yarn --cwd packages/website build"
   }
 }

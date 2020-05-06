@@ -28,7 +28,36 @@ const Dashboard = () => {
         qui hic facilis repellat.
       </Typography>
       <GraphCovidCases />
-      <MapCasesCovid />
+      <Typography variant="h5" gutterBottom>
+        CASOS POSITIVOS
+      </Typography>
+      <Typography variant="body1" className={classes.text}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
+        reiciendis accusamus aperiam, id asperiores ipsa voluptatum dolor,
+        molestias quo, excepturi officiis blanditiis neque nostrum vel debitis
+        qui hic facilis repellat.
+      </Typography>
+      <MapCasesCovid type="Positivo SARS-CoV-2" />
+      <Typography variant="h5" gutterBottom>
+        CASOS NEGATIVOS
+      </Typography>
+      <Typography variant="body1" className={classes.text}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
+        reiciendis accusamus aperiam, id asperiores ipsa voluptatum dolor,
+        molestias quo, excepturi officiis blanditiis neque nostrum vel debitis
+        qui hic facilis repellat.
+      </Typography>
+      <MapCasesCovid type="No positivo SARS-CoV-2" />
+      <Typography variant="h5" gutterBottom>
+        CASOS SIN CONFIRMAR
+      </Typography>
+      <Typography variant="body1" className={classes.text}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
+        reiciendis accusamus aperiam, id asperiores ipsa voluptatum dolor,
+        molestias quo, excepturi officiis blanditiis neque nostrum vel debitis
+        qui hic facilis repellat.
+      </Typography>
+      <MapCasesCovid type="Resultado pendiente" />
     </DashboardLayout>
   );
 };

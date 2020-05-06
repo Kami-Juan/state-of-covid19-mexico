@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {groupBy, countBy} from 'lodash';
+import React, {useEffect, useState, useRef} from 'react';
 
 import {useSelector} from 'react-redux';
 import BaseGraph from './BaseGraph';
@@ -7,7 +6,7 @@ import BaseGraph from './BaseGraph';
 import LabelColor from '../../base/LabelColor';
 import LabelColorContainer from '../../base/LabelColorContainer';
 
-import {timeRangeCollection, sizeRangeCollection} from '../../../utils/methods';
+import CovidCaseWorker from '../../../workers/covid-cases.worker';
 
 const GraphCovidCases = () => {
   const [opts, setOpts] = useState({
@@ -61,69 +60,41 @@ const GraphCovidCases = () => {
     },
   });
 
+  const covidCasesWorker = useRef(null);
+
   const covidData = useSelector(state => state.map.covidData);
 
   useEffect(() => {
-    if (covidData.length > 0) {
-      const casesByDates = groupBy(covidData, 'RESULTADO');
+    covidCasesWorker.current = new CovidCaseWorker();
+  }, []);
 
-      const positivos = casesByDates['Positivo SARS-CoV-2'];
-      const negativos = casesByDates['No positivo SARS-CoV-2'];
-      const pendientes = casesByDates['Resultado pendiente'];
+  useEffect(() => {
+    if (Object.keys(covidData).length > 0 && covidCasesWorker.current) {
+      covidCasesWorker.current.postMessage({
+        covidData,
+      });
 
-      const positivosByFechaIngreso = countBy(positivos, 'FECHA_INGRESO');
-      const negativosByFechaIngreso = countBy(negativos, 'FECHA_INGRESO');
-      const pendientesByFechaIngreso = countBy(pendientes, 'FECHA_INGRESO');
-
-      const xAxisLabels = sizeRangeCollection([
-        positivosByFechaIngreso,
-        negativosByFechaIngreso,
-        pendientesByFechaIngreso,
-      ]);
-
-      const labelValuesPositivos = timeRangeCollection(
-        positivosByFechaIngreso,
-        [xAxisLabels[0], xAxisLabels[xAxisLabels.length - 1]],
-      );
-
-      const labelValuesNegativos = timeRangeCollection(
-        negativosByFechaIngreso,
-        [xAxisLabels[0], xAxisLabels[xAxisLabels.length - 1]],
-      );
-
-      const labelValuesPendientes = timeRangeCollection(
-        pendientesByFechaIngreso,
-        [xAxisLabels[0], xAxisLabels[xAxisLabels.length - 1]],
-      );
-
-      setOpts(prev => ({
-        ...prev,
-        series: [
-          {
-            name: 'Negativos',
-            data: Object.entries(labelValuesPositivos).map(val => [
-              parseInt(val[0], 10),
-              val[1],
-            ]),
-          },
-          {
-            name: 'Positivo',
-            data: Object.entries(labelValuesNegativos).map(val => [
-              parseInt(val[0], 10),
-              val[1],
-            ]),
-          },
-          {
-            name: 'Sin confirmar',
-            data: Object.entries(labelValuesPendientes).map(val => [
-              parseInt(val[0], 10),
-              val[1],
-            ]),
-          },
-        ],
-      }));
+      covidCasesWorker.current.addEventListener('message', e => {
+        setOpts(prev => ({
+          ...prev,
+          series: [
+            {
+              name: 'Negativos',
+              data: e.data.labelValuesPositivos,
+            },
+            {
+              name: 'Positivo',
+              data: e.data.labelValuesNegativos,
+            },
+            {
+              name: 'Sin confirmar',
+              data: e.data.labelValuesPendientes,
+            },
+          ],
+        }));
+      });
     }
-  }, [covidData]);
+  }, [covidData, covidCasesWorker]);
 
   return (
     <>
