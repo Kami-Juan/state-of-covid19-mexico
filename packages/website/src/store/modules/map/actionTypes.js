@@ -1,0 +1,2 @@
+export const SET_MEXICO_GEOJSON = 'SET_MEXICO_GEOJSON';
+export const SET_COVID_DATA = 'SET_COVID_DATA';

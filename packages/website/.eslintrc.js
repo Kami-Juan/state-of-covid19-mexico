@@ -3,6 +3,8 @@ module.exports = {
   globals: {
     "document": true,
     "windows": true,
+    "window": true,
+    "fetch": true
   },
   parser: "babel-eslint",
   parserOptions: {
