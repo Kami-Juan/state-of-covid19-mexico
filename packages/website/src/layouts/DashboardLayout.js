@@ -22,10 +22,16 @@ const DashboardLayout = ({children}) => {
   useEffect(() => {
     async function getMexicoGeoJSON() {
       try {
-        const geojsonDataMexico = await (await fetch('mx.json')).json();
-        const covidDataCounters = await (
-          await fetch('covid-counters.json')
-        ).json();
+        const geoGSONUrl =
+          process.env.NODE_ENV === 'production' ? 'dist/mx.json' : 'mx.json';
+
+        const dataCovidUrl =
+          process.env.NODE_ENV === 'production'
+            ? 'dist/covid-counters.json'
+            : 'covid-counters.json';
+
+        const geojsonDataMexico = await (await fetch(geoGSONUrl)).json();
+        const covidDataCounters = await (await fetch(dataCovidUrl)).json();
 
         dispatch(setMexicoGeojson(geojsonDataMexico));
         dispatch(setCovidData(covidDataCounters));
