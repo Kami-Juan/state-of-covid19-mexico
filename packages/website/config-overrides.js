@@ -1,8 +1,8 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
-// eslint-disable-next-line no-unused-vars
 module.exports = {
+  // eslint-disable-next-line no-unused-vars
   webpack(config, env) {
     if (!config.plugins) {
       // eslint-disable-next-line no-param-reassign
@@ -25,9 +25,11 @@ module.exports = {
     config.plugins.push(
       process.env.NODE_ENV === 'production'
         ? new CopyWebpackPlugin([
-            {from: './src/assets/maps/covid.json', to: 'dist'},
+            {from: './src/assets/maps/covid-counters.json', to: 'dist'},
           ])
-        : new CopyWebpackPlugin([{from: './src/assets/maps/covid.json'}]),
+        : new CopyWebpackPlugin([
+            {from: './src/assets/maps/covid-counters.json'},
+          ]),
     );
 
     if (process.env.NODE_ENV === 'development') {

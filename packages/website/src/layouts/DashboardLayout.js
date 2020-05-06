@@ -6,8 +6,6 @@ import {useDispatch} from 'react-redux';
 import {setMexicoGeojson, setCovidData} from '../store/modules/map/actions';
 
 import Header from '../components/ui/home/Header';
-// mapbox://styles/kamiganzo/ck9qm24bg1djq1ioa7hj4ppvu
-// mapbox://styles/kamiganzo/ck9qlz1os014n1ioempih349w
 
 const useStyles = makeStyles({
   container: {
@@ -25,17 +23,20 @@ const DashboardLayout = ({children}) => {
     async function getMexicoGeoJSON() {
       try {
         const geojsonDataMexico = await (await fetch('mx.json')).json();
-        const covidData = await (await fetch('covid.json')).json();
+        const covidDataCounters = await (
+          await fetch('covid-counters.json')
+        ).json();
 
         dispatch(setMexicoGeojson(geojsonDataMexico));
-        dispatch(setCovidData(covidData));
+        dispatch(setCovidData(covidDataCounters));
       } catch (err) {
         // console.log(err);
       }
     }
 
     getMexicoGeoJSON();
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
