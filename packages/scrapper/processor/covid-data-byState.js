@@ -6,7 +6,7 @@ const {jsonConverter} = require('./../utils');
 const data = {};
 var covidData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './../data/covid.json'), 'utf8'));
 
-(() => {
+const main = () => {
   const counties = groupBy(covidData, 'ENTIDAD_RES');
 
   for (const keyCounty in counties) {
@@ -33,4 +33,6 @@ var covidData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './../data/co
   }
 
   jsonConverter(data, path.resolve('./../data/covid-counters.json'))
-})();
+}
+
+exports.main = main;

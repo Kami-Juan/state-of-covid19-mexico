@@ -1,7 +1,6 @@
-const {main: catalogs} = require('./catalogs');
-const {main: database} = require('./database-covid');
+const catalogs = require('./catalogs').main;
+const database = require('./database-covid').main;
 
-(async () => {
-  await catalogs();
-  await database();
-})();
+const main = () => Promise.all([catalogs(), database()]);
+
+exports.main = main;

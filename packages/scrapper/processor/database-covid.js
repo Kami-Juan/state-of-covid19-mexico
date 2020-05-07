@@ -1,15 +1,15 @@
-const {createReadStream} = require('fs');
 const path = require('path');
-const {jsonConverter} = require('./../utils')
+const {createReadStream} = require('fs');
+
 const csv = require('@fast-csv/parse');
+
+const {jsonConverter} = require('./../utils')
 const {getCatalogs} = require('./catalogs')
 
-const covidStream = createReadStream(path.join(__dirname, './../data/covid-mexico-data.csv'));
+const main = async () => {
 
-const covidObj = [];
-
-(async () => {
-
+  const covidObj = [];
+  const covidStream = createReadStream(path.join(__dirname, './../data/covid-mexico-data.csv'));
   const getDescription = (catalog, pos) => catalog.get(parseInt(pos))["DESCRIPCIÓN"].trim()
 
   const {
@@ -68,4 +68,6 @@ const covidObj = [];
       }
     })
     .on('end', () => jsonConverter(covidObj, path.join('./../data/covid.json')));
-})();
+}
+
+exports.main = main;
