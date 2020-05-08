@@ -1,4 +1,5 @@
-const {createWriteStream, mkdirSync, existsSync} = require('fs');
+const { mkdirSync, existsSync, writeFile, ensureDirSync} = require('fs-extra');
+const {createWriteStream} = require('fs')
 const path = require('path');
 const fs = require('fs');
 
@@ -20,6 +21,23 @@ exports.unzip = (zipStream, filename = null, outputDir = path.join(__dirname, '.
   });
 }
 
+exports.promiseUnzip = (zipStream) => {
+  return new Promise((resolve, reject) => {
+    if (!existsSync(path.join(__dirname,`./../${process.env.TMP_FOLDER}`))) {
+      mkdirSync(path.join(__dirname,`./../${process.env.TMP_FOLDER}`), {recursive: true});
+    }
+
+    zipStream
+    .on('end', () => resolve())
+    .on('error', () => reject())
+    .pipe(unzipper.Parse())
+    .on('entry', (entry) => {
+      // storeStream(entry, entry.path.split("/").pop())
+      entry.pipe(createWriteStream(path.join(__dirname, `./../${process.env.TMP_FOLDER}/${entry.path.split("/").pop()}`)))
+    });
+  })
+}
+
 exports.readExcelStream = (stream, cb) => {
   const buffers = [];
 
@@ -39,10 +57,19 @@ exports.readExcelStream = (stream, cb) => {
   });
 }
 
+exports.convertArrayToMap = (list, key = 'CLAVE') => list.reduce((prev, current) => prev.set(current[key], current), new Map())
+
+exports.getDescriptionByCatalog = (catalog, pos) => catalog.get(parseInt(pos))["DESCRIPCIÓN"].trim()
+
+const storeStream = async (stream, filename) => {
+  // ensureDirSync(`./../${process.env.TMP_FOLDER}`);
+  stream.pipe(createWriteStream(path.resolve(__dirname, `./../${process.env.TMP_FOLDER}/${filename}`)))
+}
+
 exports.jsonConverter = (data, dir) => {
   const json = JSON.stringify(data, null, 2);
 
-  fs.writeFile(dir, json, (err) => {
+  writeFile(dir, json, (err) => {
     if (err) throw err;
   });
 };
