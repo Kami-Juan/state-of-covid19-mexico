@@ -1,3 +1,4 @@
 node_modules
 packages/**/.env
 packages/scrapper/process_data
+packages/scrapper/data
