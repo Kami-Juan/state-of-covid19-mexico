@@ -1,6 +1,8 @@
 {
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "name": "covid-19-mexico-dashboard",
   "version": "1.0.0",
   "description": "Web Dashboard and Data Automation for COVID-19 Mexico Information",
@@ -8,12 +10,14 @@
   "author": "Juan de Dios Canche Cen",
   "license": "MIT",
   "devDependencies": {
+    "cross-spawn": "^7.0.2",
     "lerna": "^3.20.2",
     "vuepress": "^1.4.1"
   },
   "scripts": {
     "docs:dev": "vuepress dev packages/docs",
     "docs:build": "vuepress build packages/docs",
-    "website:build": "yarn --cwd packages/website build"
+    "website:build": "yarn --cwd packages/website build",
+    "build": "node scripts/build.js"
   }
 }

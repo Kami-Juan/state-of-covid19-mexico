@@ -34,7 +34,11 @@ const {jsonConverter} = require('./utils');
     jsonConverter(formattedCovidData, `./${process.env.DATA_FOLDER}/covid-data.json`);
 
     console.log("Removiendo datos temporales...");
-    await remove(path.join(__dirname, `./${process.env.TMP_FOLDER}`));
+
+    if (process.env.DELETE_RESOURCES && process.env.DELETE_RESOURCES === "true") {
+      await remove(path.join(__dirname, `./${process.env.TMP_FOLDER}`));
+    }
+
     console.log("Terminado");
   } catch (e) {
     console.log(e)

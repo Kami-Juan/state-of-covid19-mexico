@@ -16,5 +16,8 @@
     "numeral": "^2.0.6",
     "unzipper": "^0.10.11",
     "xlsx": "^0.16.0"
+  },
+  "scripts": {
+    "generate": "node index.js"
   }
 }
