@@ -1,0 +1,17 @@
+language: node_js
+node_js: node
+cache:
+  yarn: true
+  directories:
+    - node_modules
+env:
+  - CI=true
+before_deploy:
+  - yarn global add netlify-cli
+  - yarn build
+deploy:
+  provider: script
+  script: netlify deploy -s https://state-of-covid19-mexico.netlify.app -a 8c78f344c060fcf38448e56521cb282f33252ff7a91b306e451f48ad5f543490 -d ./packages/website/build
+  skip_cleanup: true
+  on:
+    branch: master
