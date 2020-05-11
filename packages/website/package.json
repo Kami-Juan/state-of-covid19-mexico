@@ -40,6 +40,38 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "src/**.{js,jsx}",
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 15,
+        "branches": 10,
+        "functions": 10,
+        "lines": 15
+      }
+    },
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.jsx$": "babel-jest"
+    },
+    "coverageReporters": ["json", "html", "lcov", "text-summary"],
+    "moduleNameMapper": {
+      ".*\\.(css|less|styl|scss|sass)$":
+        "<rootDir>/config/jest-mocks/cssModule.js",
+      ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+        "<rootDir>/config/jest-mocks/image.js",
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@material-ui)",
+      "/node_modules/(?!(@material-ui/icons/esm/index)/)"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
@@ -59,6 +91,7 @@
     "@testing-library/user-event": "^7.1.2",
     "babel-eslint": "^10.0.3",
     "babel-plugin-import": "^1.13.0",
+    "babel-plugin-transform-imports": "^2.0.0",
     "babel-polyfill": "^6.26.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.1",

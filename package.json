@@ -18,6 +18,7 @@
     "docs:dev": "vuepress dev packages/docs",
     "docs:build": "vuepress build packages/docs",
     "website:build": "yarn --cwd packages/website build",
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "test:website": "yarn --cwd packages/website test"
   }
 }
