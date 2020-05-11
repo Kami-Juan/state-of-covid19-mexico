@@ -1,0 +1,17 @@
+language: node_js
+node_js: node
+cache:
+  yarn: true
+  directories:
+    - node_modules
+script:
+  - yarn test:website
+before_deploy:
+  - yarn global add netlify-cli
+  - bash scripts/retrieve_data.sh
+deploy:
+  provider: script
+  script: netlify deploy -s $DEPLOY_PAGE -a $NETLIFY_TOKEN -d ./packages/website/build
+  skip_cleanup: true
+  on:
+    branch: master
