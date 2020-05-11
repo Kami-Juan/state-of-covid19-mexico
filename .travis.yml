@@ -8,7 +8,7 @@ script:
   - yarn test:website
 before_deploy:
   - yarn global add netlify-cli
-  - yarn build
+  - bash scripts/retrieve_data.sh
 deploy:
   provider: script
   script: netlify deploy -s $DEPLOY_PAGE -a $NETLIFY_TOKEN -d ./packages/website/build
