@@ -11,7 +11,7 @@ before_deploy:
   - bash scripts/retrieve_data.sh
 deploy:
   provider: script
-  script: netlify deploy -s $DEPLOY_PAGE -a $NETLIFY_TOKEN -d ./packages/website/build
+  script: netlify deploy -s $DEPLOY_PAGE -a $NETLIFY_TOKEN -d ./packages/website/build --prod
   skip_cleanup: true
   on:
     branch: master
