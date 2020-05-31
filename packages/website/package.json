@@ -9,6 +9,7 @@
     "connected-react-router": "^6.8.0",
     "highcharts": "^8.0.4",
     "lodash": "^4.17.15",
+    "ramda": "^0.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.5",
@@ -59,12 +60,15 @@
       "^.+\\.js$": "babel-jest",
       "^.+\\.jsx$": "babel-jest"
     },
-    "coverageReporters": ["json", "html", "lcov", "text-summary"],
+    "coverageReporters": [
+      "json",
+      "html",
+      "lcov",
+      "text-summary"
+    ],
     "moduleNameMapper": {
-      ".*\\.(css|less|styl|scss|sass)$":
-        "<rootDir>/config/jest-mocks/cssModule.js",
-      ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/config/jest-mocks/image.js",
+      ".*\\.(css|less|styl|scss|sass)$": "<rootDir>/config/jest-mocks/cssModule.js",
+      ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest-mocks/image.js",
       "^@/(.*)$": "<rootDir>/src/$1"
     },
     "transformIgnorePatterns": [

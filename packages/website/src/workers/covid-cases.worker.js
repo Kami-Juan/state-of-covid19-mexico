@@ -1,3 +1,30 @@
+import {
+  map,
+  compose,
+  pickAll,
+  keys,
+  values,
+  unnest,
+  uniq,
+  sort,
+  groupBy,
+  toPairs,
+  sum,
+} from 'ramda';
+
+const getLabelByCollect = (data, key) => {
+  return compose(
+    map(x => [new Date(x[0]).getTime(), x[1]]),
+    toPairs,
+    map(x => sum(map(y => y[1], x))),
+    groupBy(x => x[0]),
+    unnest,
+    map(x => toPairs(x)),
+    map(x => map(y => (y ? y[key] || 0 : 0), x)),
+    values,
+  )(data);
+};
+
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
@@ -7,69 +34,48 @@ self.addEventListener('message', e => {
 
   const {covidData} = e.data;
 
-  const datesWithCases = {};
+  const keysVal = compose(
+    sort((a, b) => new Date(a) - new Date(b)),
+    uniq,
+    unnest,
+    map(x => keys(x)),
+    values,
+    map(x => map(y => y, x.dates)),
+  )(covidData);
 
-  for (const data in covidData) {
-    for (const date in covidData[data].dates) {
-      const {resultados} = covidData[data].dates[date];
+  const composeData = compose(
+    map(x => pickAll(keysVal, x)),
+    map(x =>
+      map(
+        z =>
+          pickAll(
+            [
+              'Positivo SARS-CoV-2',
+              'No positivo SARS-CoV-2',
+              'Resultado pendiente',
+            ],
+            z,
+          ),
+        x,
+      ),
+    ),
+    map(x => map(z => z.resultados, x)),
+    map(x => x.dates),
+  )(covidData);
 
-      const posCount = resultados['Positivo SARS-CoV-2']
-        ? resultados['Positivo SARS-CoV-2']
-        : 0;
-
-      const noPosCount = resultados['No positivo SARS-CoV-2']
-        ? resultados['No positivo SARS-CoV-2']
-        : 0;
-
-      const pendCount = resultados['Resultado pendiente']
-        ? resultados['Resultado pendiente']
-        : 0;
-
-      if (Object.keys(datesWithCases).length > 0 && datesWithCases[date]) {
-        datesWithCases[date] = {
-          'Positivo SARS-CoV-2':
-            datesWithCases[date]['Positivo SARS-CoV-2'] + posCount,
-          'No positivo SARS-CoV-2':
-            datesWithCases[date]['No positivo SARS-CoV-2'] + noPosCount,
-          'Resultado pendiente':
-            datesWithCases[date]['Resultado pendiente'] + pendCount,
-        };
-      } else {
-        datesWithCases[date] = {
-          'Positivo SARS-CoV-2': posCount,
-          'No positivo SARS-CoV-2': noPosCount,
-          'Resultado pendiente': posCount,
-        };
-      }
-    }
-  }
-
-  const orderedKeys = Object.keys(datesWithCases).sort(
-    (a, b) => new Date(a) - new Date(b),
+  const labelValuesPositivos = getLabelByCollect(
+    composeData,
+    'Positivo SARS-CoV-2',
   );
 
-  const labelValuesPositivos = orderedKeys.reduce(
-    (prev, key) => [
-      ...prev,
-      [new Date(key).getTime(), datesWithCases[key]['Positivo SARS-CoV-2']],
-    ],
-    [],
+  const labelValuesNegativos = getLabelByCollect(
+    composeData,
+    'No positivo SARS-CoV-2',
   );
 
-  const labelValuesNegativos = orderedKeys.reduce(
-    (prev, key) => [
-      ...prev,
-      [new Date(key).getTime(), datesWithCases[key]['No positivo SARS-CoV-2']],
-    ],
-    [],
-  );
-
-  const labelValuesPendientes = orderedKeys.reduce(
-    (prev, key) => [
-      ...prev,
-      [new Date(key).getTime(), datesWithCases[key]['Resultado pendiente']],
-    ],
-    [],
+  const labelValuesPendientes = getLabelByCollect(
+    composeData,
+    'Resultado pendiente',
   );
 
   postMessage({
